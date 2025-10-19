@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PetClinic | Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="containerII">
+        <div class="innerContainer">
+            <div class="box1">
+                <h1>Create Account</h1>
+                <form method="POST">
+                    <label>Full Name</label>
+                    <input type="text" name="fullname" required>
+
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+
+                    <input type="submit" id="submit" value="Register">
+                </form>
+                <p class="link">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+            </div>
+            <div class="box2">
+                <img src="{{ url_for('static', filename='assets/pet_register.png') }}" alt="Register Image">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PetClinic | Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="nav">
+        <h2>🐾 Admin Dashboard</h2>
+    </div>
+
+    <div id="title">
+        <h1>All Appointments</h1>
+    </div>
+
+    <table id="customers">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Pet Name</th>
+                <th>Owner</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in appointments %}
+            <tr>
+                <td>{{ a.id }}</td>
+                <td>{{ a.pet_name }}</td>
+                <td>{{ a.user.fullname }}</td>
+                <td>{{ a.date }}</td>
+                <td>{{ a.time }}</td>
+                <td>{{ a.reason }}</td>
+                <td>{{ a.status }}</td>
+                <td>
+                    <a href="{{ url_for('update_status', appointment_id=a.id, status='Approved') }}" class="accept">Approve</a>
+                    <a href="{{ url_for('update_status', appointment_id=a.id, status='Rejected') }}" class="reject">Reject</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="8" id="not_available_box">No Appointments Available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="text-align:center;margin-bottom:30px;">
+        <a href="{{ url_for('logout') }}" class="form_btn">Logout</a>
+    </div>
+</body>
+</html>

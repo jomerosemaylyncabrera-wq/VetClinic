@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PetClinic | Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="nav">
+        <h2>🐾 Welcome to PetClinic</h2>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-section-div right-center">
+            <h5>Trusted Veterinary Care</h5>
+            <h1>Your Pet’s Health, Our Priority</h1>
+            <p>
+                Book appointments with professional veterinarians who care for your furry friends like family.
+                Easy, fast, and reliable — all in one place.
+            </p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('login') }}" class="btn-main">Login as Pet Owner</a>
+                <a href="{{ url_for('admin_login') }}" class="btn-alt">Admin Login</a>
+                <a href="{{ url_for('book') }}" class="btn-book">Book Appointment</a>
+            </div>
+        </div>
+
+        <div class="hero-section-img"></div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer style="text-align:center;padding:20px;background-color:#f3f7ff;color:#555;">
+        <p>© 2025 PetClinic | All Rights Reserved</p>
+    </footer>
+
+</body>
+</html>
