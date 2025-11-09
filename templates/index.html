@@ -3,38 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <title>PetClinic | Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', Arial, sans-serif;
+            background-color: #f5ede7;
+            color: #181F49;
+        }
+        /* Navbar */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 28px 24px 0 24px;
+        }
+        .navbar-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            font-size: 2rem;
+            color: #ef764c;
+            letter-spacing: .7px;
+        }
+        .navbar-buttons {
+            display: flex;
+            gap: 1.2rem;
+        }
+        .btn-main, .btn-alt, .btn-book {
+            padding: 0.72rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.02rem;
+            border: none;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s, box-shadow 0.18s, transform 0.18s;
+            box-shadow: 0 2px 10px rgba(239,118,76,0.07);
+            cursor: pointer;
+        }
+        .btn-main {
+            background: linear-gradient(90deg,#4A7DFF 60%, #ef764c 140%);
+            color: #fff;
+        }
+        .btn-main:hover { background: #ef764c; }
+        .btn-alt {
+            background: #fff;
+            color: #4A7DFF;
+            border: 2px solid #4A7DFF;
+        }
+        .btn-alt:hover { background: #4A7DFF; color: #fff; }
+        .btn-book {
+            background: linear-gradient(90deg, #ef764c 70%, #4A7DFF 100%);
+            color: #fff;
+        }
+        .btn-book:hover { background: #4A7DFF; }
+        /* Hero */
+        .hero-section {
+            display: flex;
+            align-items: center;
+            max-width: 1200px;
+            margin: 38px auto 0 auto;
+            padding: 0 24px;
+            gap: 52px;
+        }
+        .hero-left {
+            flex: 1.25;
+            min-width: 320px;
+        }
+        .hero-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 2.7rem;
+            line-height: 1.1;
+            color: #181F49;
+            margin-bottom: 22px;
+        }
+        .hero-desc {
+            font-size: 1.14rem;
+            color: #222C43;
+            margin-bottom: 36px;
+            max-width: 430px;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1.1rem;
+            margin-bottom: 10px;
+        }
+        /* Hero Image */
+        .hero-right {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        .hero-img-frame {
+            background: linear-gradient(120deg, #fff2e6 60%, #e7eaff 100%);
+            border-radius: 40px;
+            box-shadow: 0 6px 36px rgba(85, 67, 220, 0.09);
+            padding: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .hero-img-frame img {
+            width: 270px;
+            height: 330px;
+            object-fit: cover;
+            border-radius: 25px;
+            box-shadow: 0 2px 30px rgba(239, 118, 76, 0.13);
+            border: 7px solid #fff;
+        }
+        /* Services Section */
+        .services-list {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            margin: 65px auto 0 auto;
+            max-width: 1000px;
+            padding: 0 24px;
+        }
+        .service-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 16px rgba(74, 125, 255, 0.07);
+            padding: 36px 22px 26px 22px;
+            text-align: center;
+            min-width: 140px;
+            flex: 1;
+            transition: box-shadow .19s, transform .16s, background .19s;
+            cursor: pointer;
+        }
+        .service-card:hover {
+            background: #f8fbff;
+            box-shadow: 0 6px 22px rgba(239, 118, 76, 0.14);
+            transform: translateY(-6px) scale(1.045);
+        }
+        .service-card img {
+            width: 44px;
+            margin-bottom: 13px;
+        }
+        .service-title {
+            font-family: 'Montserrat', sans-serif;
+            color: #181F49;
+            font-weight: 600;
+            font-size: 1.11rem;
+            margin-bottom: 7px;
+        }
+        .service-desc {
+            color: #47477c;
+            font-size: 0.97rem;
+        }
+        .footer {
+            margin-top: 55px;
+            padding: 33px 0 13px 0;
+            background: linear-gradient(90deg, #faf5e1 60%, #f8f0ff 100%);
+            box-shadow: 0 -4px 14px 0 rgba(90,60,190,.06);
+            text-align: center;
+            color: #47477c;
+            font-size: 1.05rem;
+        }
+        /* Responsive */
+        @media (max-width: 900px) {
+            .navbar, .hero-section {flex-direction:column;}
+            .navbar {padding:24px 10px 0 10px;}
+            .hero-section {padding:0 10px;}
+            .hero-title {font-size:2rem;}
+            .services-list {gap:10px;}
+        }
+        @media (max-width: 600px) {
+            .navbar-logo{font-size:1.13rem;}
+            .hero-title{font-size:1.12rem;}
+            .hero-img-frame img{width:150px;height:180px;}
+            .service-title{font-size:.98rem;}
+            .services-list{gap:7px;}
+        }
+    </style>
 </head>
 <body>
-
     <!-- Navigation Bar -->
-    <div id="nav">
-        <h2>🐾 Welcome to PetClinic</h2>
-    </div>
-
+    <nav class="navbar">
+        <div class="navbar-logo">🐾 PetClinic</div>
+        <div class="navbar-buttons">
+            <a href="{{ url_for('login') }}" class="btn-main">Login as Pet Owner</a>
+            <a href="{{ url_for('admin_login') }}" class="btn-alt">Admin Login</a>
+            <a href="{{ url_for('book') }}" class="btn-book">Book Appointment</a>
+        </div>
+    </nav>
     <!-- Hero Section -->
     <section class="hero-section">
-        <div class="hero-section-div right-center">
-            <h5>Trusted Veterinary Care</h5>
-            <h1>Your Pet’s Health, Our Priority</h1>
-            <p>
-                Book appointments with professional veterinarians who care for your furry friends like family.
-                Easy, fast, and reliable — all in one place.
-            </p>
+        <div class="hero-left">
+            <div class="hero-title">Your Pet Deserves the Best Care</div>
+            <div class="hero-desc">
+                We offer trusted veterinary services with heart. Our team cares for every tail, paw, and whisker—cats, dogs, rabbits, fish, and more.
+                Book appointments easily, get reminders, and connect with experts who treat your pet like family.
+            </div>
             <div class="hero-buttons">
                 <a href="{{ url_for('login') }}" class="btn-main">Login as Pet Owner</a>
                 <a href="{{ url_for('admin_login') }}" class="btn-alt">Admin Login</a>
                 <a href="{{ url_for('book') }}" class="btn-book">Book Appointment</a>
             </div>
         </div>
-
-        <div class="hero-section-img"></div>
+        <div class="hero-right">
+            <div class="hero-img-frame">
+                <img src="{{ url_for('static', filename='cat.jpg') }}" alt="Featured Pet">
+            </div>
+        </div>
     </section>
-
-    <!-- Footer Section -->
-    <footer style="text-align:center;padding:20px;background-color:#f3f7ff;color:#555;">
-        <p>© 2025 PetClinic | All Rights Reserved</p>
+    <!-- Footer -->
+    <footer class="footer">
+        © 2025 PetClinic — Where every paw, tail, and whisker matters!
     </footer>
-
 </body>
 </html>

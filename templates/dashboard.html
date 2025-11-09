@@ -1,57 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>PetClinic | Admin Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<meta charset="UTF-8">
+<title>PetClinic | Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #e3f0ff 0%, #f1e3ff 100%);
+    min-height: 100vh;
+}
+.dashboard {
+    display: flex;
+    max-width: 1400px;
+    margin: 40px auto;
+    box-shadow: 0 6px 24px rgba(25,75,115,0.10);
+    border-radius: 20px;
+    overflow: hidden;
+    background: white;
+}
+.sidebar {
+    width: 260px;
+    background: linear-gradient(135deg, #007bff 90%, #0062cc 120%);
+    padding: 40px 20px 20px 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.sidebar h2 { font-size: 2rem; margin:0 0 36px 0; letter-spacing:2px; }
+.sidebar .logout {
+    display:block;
+    margin-top:60px;
+    text-align:center;
+    font-weight:600;
+    color:white;
+    text-decoration:none;
+    padding:14px 0;
+    border-radius:25px;
+    background:#f44336;
+    transition:0.2s;
+}
+.sidebar .logout:hover { background:#c82333; }
+
+.main-content {
+    flex:1;
+    padding:40px;
+}
+.section-title {
+    color:#1b2a47;
+    font-size:1.6rem;
+    font-weight:600;
+    text-align:left;
+    margin-bottom:25px;
+    padding-bottom:10px;
+    border-bottom:2px solid #f0f2f5;
+    letter-spacing:1px;
+}
+table {
+    width:100%;
+    border-collapse: separate;
+    border-spacing:0;
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.08);
+    overflow:hidden;
+    margin-bottom:30px;
+}
+th, td { padding:18px 16px; text-align:left; vertical-align:middle; font-size:1rem; }
+th { background:#f5f8fc; color:#007bff; font-weight:700; border-bottom:1px solid #eef2fa; }
+tr:nth-child(even) td { background:#f9fafc; }
+tr:hover td { background:#e8f1ff; }
+.status {
+    font-weight:600;
+    border-radius:20px;
+    padding:7px 18px;
+    display:inline-block;
+}
+.status.Pending { color:#856404; background:#fff3cd; }
+.status.Approved { color:#155724; background:#d4edda; }
+.status.Declined { color:#721c24; background:#f8d7da; }
+.btn {
+    border:none;
+    padding:9px 22px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:600;
+    color:white;
+    font-size:.98rem;
+    margin:0 2px;
+    transition:.2s;
+    letter-spacing:.5px;
+    box-shadow:0 2px 6px rgba(0,123,255,0.11);
+}
+.approve { background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%) }
+.approve:hover { background: linear-gradient(90deg, #35c277 0%, #24d1cc 100%) }
+.decline { background: linear-gradient(90deg, #ff5858 0%, #f09819 100%) }
+.decline:hover { background: linear-gradient(90deg, #e14646 0%, #c77719 100%) }
+
+@media (max-width:900px){ .dashboard{flex-direction:column;} .sidebar{width:100%; padding:20px;} .main-content{padding:20px;} }
+@media (max-width:600px){ th,td{padding:9px 4px;font-size:.95rem;} .section-title{font-size:1.18rem;} }
+</style>
 </head>
 <body>
-    <div id="nav">
-        <h2>🐾 Admin Dashboard</h2>
-    </div>
-
-    <div id="title">
-        <h1>All Appointments</h1>
-    </div>
-
-    <table id="customers">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Pet Name</th>
-                <th>Owner</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Reason</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for a in appointments %}
-            <tr>
-                <td>{{ a.id }}</td>
-                <td>{{ a.pet_name }}</td>
-                <td>{{ a.user.fullname }}</td>
-                <td>{{ a.date }}</td>
-                <td>{{ a.time }}</td>
-                <td>{{ a.reason }}</td>
-                <td>{{ a.status }}</td>
-                <td>
-                    <a href="{{ url_for('update_status', appointment_id=a.id, status='Approved') }}" class="accept">Approve</a>
-                    <a href="{{ url_for('update_status', appointment_id=a.id, status='Rejected') }}" class="reject">Reject</a>
-                </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="8" id="not_available_box">No Appointments Available</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <div style="text-align:center;margin-bottom:30px;">
-        <a href="{{ url_for('logout') }}" class="form_btn">Logout</a>
-    </div>
+<div class="dashboard">
+    <aside class="sidebar">
+        <div>
+            <h2>Admin</h2>
+            <div><span style="opacity:.8;font-weight:600;letter-spacing:1px;">Dashboard</span></div>
+        </div>
+        <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+    </aside>
+    <main class="main-content">
+        <section class="section">
+            <div class="section-title">All Appointments</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Pet Name</th>
+                        <th>Owner</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in appointments %}
+                    <tr>
+                        <td>{{ a.id }}</td>
+                        <td>{{ a.pet_name }}</td>
+                        <td>{{ a.user.fullname }}</td>
+                        <td>{{ a.date }}</td>
+                        <td>{{ a.time }}</td>
+                        <td>{{ a.reason }}</td>
+                        <td><span class="status {{ a.status }}">{{ a.status }}</span></td>
+                        <td>
+                            {% if a.status=="Pending" %}
+                            <a href="{{ url_for('update_status', appointment_id=a.id, status='Approved') }}" class="btn approve">Approve</a>
+                            <a href="{{ url_for('update_status', appointment_id=a.id, status='Declined') }}" class="btn decline">Decline</a>
+                            {% else %}
+                            <span style="font-weight:600;">{{ a.status }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="8" style="text-align:center;">No Appointments Available</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+</div>
 </body>
 </html>

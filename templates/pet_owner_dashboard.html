@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PetClinic | Pet Owner Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body { margin:0; padding:0; font-family:'Quicksand',Arial,sans-serif; background: #f6f4fa; color:#181F49;}
+.dashboard-container{max-width:1200px;margin:36px auto;padding:0 24px;}
+.dashboard-header{display:flex;align-items:center;justify-content:space-between;}
+.profile-section{display:flex;align-items:center;gap:24px;background:#fff;border-radius:18px;box-shadow:0 2px 12px rgba(90,60,190,0.08);padding:30px 36px;}
+.profile-avatar{width:88px;height:88px;border-radius:50%;background:#e7e7fc;display:flex;justify-content:center;align-items:center;font-size:2.6rem;font-family:'Montserrat',sans-serif;}
+.profile-details{flex:1;}
+.profile-details h2{margin:0 0 4px 0;font-size:1.44rem;color:#4A7DFF;}
+.profile-details .info-row{font-size:1.05rem;margin-bottom:2px;color:#47477c;}
+.edit-profile-btn{background:#ef764c;color:#fff;font-weight:600;border:none;border-radius:18px;padding:9px 22px;font-size:1rem;cursor:pointer;transition:.19s;}
+.edit-profile-btn:hover{background:#4A7DFF;}
+.section-title{font-family:'Montserrat',sans-serif;font-weight:700;color:#4A7DFF;font-size:1.22rem;margin:38px 0 15px 0;text-shadow:0 1px 0 #fff;}
+.doctors-list{display:flex;gap:22px;flex-wrap:wrap;}
+.doctor-card{background:#fff;border-radius:16px;box-shadow:0 2px 8px rgba(245,140,69,0.11);padding:20px 18px;width:220px;text-align:center;}
+.doctor-avatar{width:64px;height:64px;border-radius:50%;background:#f7eef7;margin:auto 0 12px 0;display:flex;align-items:center;justify-content:center;}
+.doctor-card h4{margin:0 0 3px 0;font-size:1.12rem;color:#181F49;}
+.doctor-card .specialty{color:#ef764c;font-size:.97rem;margin-bottom:7px;}
+.book-btn{background:linear-gradient(90deg, #ef764c 70%, #4A7DFF 100%);color:#fff;font-weight:600;border:none;border-radius:18px;padding:7px 18px;font-size:.97rem;cursor:pointer;transition:background .18s;box-shadow:0 1px 7px rgba(74,125,255,0.13);}
+.book-btn:hover{background:#4A7DFF;}
+.bookings-list{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(90,60,190,0.09);padding:24px 20px;margin-bottom:34px;}
+.bookings-table{width:100%;border-collapse:collapse;}
+.bookings-table th{font-family:'Montserrat';background:#f2f6ff;color:#181F49;font-weight:700;padding:10px;}
+.bookings-table td{padding:10px;color:#47477c;}
+.bookings-table tr:nth-child(even){background:#f7f7fc;}
+@media(max-width:900px){
+    .dashboard-container{padding:0 8px;}
+    .profile-section{flex-direction:column;align-items:flex-start;padding:20px 12px;}
+    .doctors-list{gap:12px;}
+    .doctor-card{width:100%;}
+}
+@media(max-width:600px){
+    .profile-avatar{width:54px;height:54px;font-size:1.6rem;}
+    .dashboard-header{flex-direction:column;align-items:flex-start;}
+    .edit-profile-btn{margin-top:10px;}
+    .doctor-card{padding:16px 8px;}
+}
+</style>
+</head>
+<body>
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <div class="profile-section">
+            <div class="profile-avatar">
+                <!-- If pic available use <img src="{{ pet_owner.photo_url }}">; fallback circle with initial -->
+                {{ current_user.name[0] if current_user.name else "U" }}
+            </div>
+            <div class="profile-details">
+                <h2>{{ current_user.name }}</h2>
+                <div class="info-row"><strong>Email:</strong> {{ current_user.email }}</div>
+                <div class="info-row"><strong>Contact:</strong> {{ current_user.contact }}</div>
+                <div class="info-row"><strong>Address:</strong> {{ current_user.address }}</div>
+            </div>
+        </div>
+        <button class="edit-profile-btn" onclick="location.href='{{ url_for('edit_profile') }}'">Edit Profile</button>
+    </div>
+
+    <div class="section-title">Available Doctors</div>
+    <div class="doctors-list">
+        {% for doctor in doctors %}
+        <div class="doctor-card">
+            <div class="doctor-avatar">
+                <img src="{{ doctor.photo_url }}" alt="Doctor" style="width:100%;height:100%;border-radius:50%;">
+            </div>
+            <h4>{{ doctor.name }}</h4>
+            <div class="specialty">{{ doctor.specialty }}</div>
+            <button class="book-btn" onclick="location.href='{{ url_for('book', doctor_id=doctor.id) }}'">Book Now</button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="section-title">Previous Bookings</div>
+    <div class="bookings-list">
+        <table class="bookings-table">
+            <tr>
+                <th>Date</th>
+                <th>Doctor</th>
+                <th>Pet</th>
+                <th>Status</th>
+                <th>Details</th>
+            </tr>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.date }}</td>
+                <td>{{ booking.doctor_name }}</td>
+                <td>{{ booking.pet_name }}</td>
+                <td>{{ booking.status }}</td>
+                <td>
+                    <a href="{{ url_for('booking_details', booking_id=booking.id) }}" style="color:#4A7DFF;text-decoration:underline;">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% if bookings|length == 0 %}
+        <div style="padding:17px;color:#ef764c;text-align:center;">No previous bookings found.</div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

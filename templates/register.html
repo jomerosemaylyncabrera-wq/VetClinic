@@ -1,33 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>PetClinic | Register</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<meta charset="UTF-8">
+<title>PetClinic | Register</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body { margin:0; padding:0; font-family:'Quicksand',Arial,sans-serif; background: #f5ede7;}
+body {
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;
+}
+.container {
+    max-width:900px; width:97%; background:white; border-radius:24px; box-shadow:0 6px 24px rgba(25,75,115,0.10);
+    display:flex; overflow:hidden; margin: 48px 0 0 0;
+}
+.box1, .box2 { flex:1; padding:40px; }
+.box1 {
+    display: flex;
+    flex-direction:column; justify-content:center;
+}
+.box1 h1 {
+    color:#4A7DFF; margin-bottom:25px; font-size:2.1rem; font-family: 'Montserrat',sans-serif;
+}
+.box1 .welcome {
+    color:#ef764c;
+    font-size:1.05rem;
+    margin-bottom:22px;
+    font-family:'Quicksand',sans-serif;
+}
+.box1 form label { display:block; font-weight:600; margin-bottom:6px; }
+.box1 form input[type=text], .box1 form input[type=email], .box1 form input[type=password] {
+    width:100%; padding:12px 16px; margin-bottom:22px;
+    border:1px solid #e1e4e8; border-radius:8px; font-size:1.04rem;
+}
+.box1 form input[type=submit] {
+    background: linear-gradient(90deg, #ef764c 0%, #4a7dff 100%);
+    border:none; color:white; padding:13px 36px; border-radius:24px; font-weight:700;
+    cursor:pointer; font-size:1.07rem; transition:.2s; font-family: 'Montserrat',sans-serif;
+    box-shadow: 0 2px 16px rgba(74,125,255,0.08);
+}
+.box1 form input[type=submit]:hover {
+    background: linear-gradient(90deg, #4a7dff 0%, #ef764c 100%);
+    transform:scale(1.06);
+}
+.box1 .link { margin-top:18px; font-size:.99rem; }
+.box1 .link a { color:#ef764c; text-decoration:none; font-weight:600; }
+.box2 {
+    background:#f5f8fc; display:flex; justify-content:center; align-items:center;
+    position:relative;
+}
+.box2 img {
+    max-width:100%; border-radius:20px;
+    box-shadow: 0 2px 12px rgba(239,118,76,0.10);
+}
+@media(max-width:800px){
+    .container{flex-direction:column;} .box2{padding:20px;} .box1{padding:30px;}
+}
+@media(max-width:600px){
+    .box1 h1{font-size:1.25rem;}
+    .box2 img{max-width:180px;}
+    .container{margin:20px 0 0 0;}
+}
+</style>
 </head>
 <body>
-    <div class="containerII">
-        <div class="innerContainer">
-            <div class="box1">
-                <h1>Create Account</h1>
-                <form method="POST">
-                    <label>Full Name</label>
-                    <input type="text" name="fullname" required>
-
-                    <label>Email</label>
-                    <input type="email" name="email" required>
-
-                    <label>Password</label>
-                    <input type="password" name="password" required>
-
-                    <input type="submit" id="submit" value="Register">
-                </form>
-                <p class="link">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
-            </div>
-            <div class="box2">
-                <img src="{{ url_for('static', filename='assets/pet_register.png') }}" alt="Register Image">
-            </div>
-        </div>
+<div class="container">
+    <div class="box1">
+        <h1>Create Account</h1>
+        <div class="welcome">Join PetClinic — your pet’s happy place!</div>
+        <form method="POST">
+            <label>Full Name</label>
+            <input type="text" name="fullname" required>
+            <label>Email</label>
+            <input type="email" name="email" required>
+            <label>Password</label>
+            <input type="password" name="password" required>
+            <input type="submit" value="Register">
+        </form>
+        <p class="link">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
     </div>
+    <div class="box2">
+        <img src="{{ url_for('static', filename='assets/pet_register.png') }}" alt="Register Image">
+    </div>
+</div>
 </body>
 </html>
