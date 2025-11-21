@@ -281,3 +281,113 @@ input, select {
     position: relative;
     z-index: 2;
 }
+:root{
+  --bg-start: #e3f0ff;
+  --bg-end:   #f1e3ff;
+  --primary:  #007bff;
+  --accent-1: #43e97b;
+  --accent-2: #38f9d7;
+  --warm:     #ef764c;
+  --muted:    #6b7280;
+  --panel:    #ffffff;
+  --border:   #e6edf3;
+  --radius:   12px;
+  --shadow-lg: 0 12px 40px rgba(15,45,80,0.08);
+  --shadow-sm: 0 6px 18px rgba(15,45,80,0.06);
+  --max-width:1200px;
+  --gap: 18px;
+  --text: #0f1724;
+}
+
+/* Reset */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:linear-gradient(135deg,var(--bg-start),var(--bg-end));color:var(--text);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* Page container */
+.site{max-width:var(--max-width);margin:28px auto;padding:20px;display:flex;flex-direction:column;gap:var(--gap)}
+
+/* Topbar */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:transparent;padding:8px 6px;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .logo{
+  width:56px;height:56px;border-radius:10px;background:linear-gradient(180deg,#dff3ff,#bfe7ff);
+  display:flex;align-items:center;justify-content:center;color:var(--primary);font-weight:800;font-size:20px;border:1px solid rgba(11,118,209,0.06);
+  box-shadow:var(--shadow-sm)
+}
+.brand .title{font-weight:700;font-size:1.05rem}
+.top-actions{display:flex;gap:10px;align-items:center}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+.btn--primary{background:var(--primary);color:white;box-shadow:0 8px 22px rgba(11,118,209,0.08)}
+.btn--cta{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;border-radius:20px;padding:9px 14px}
+.btn--ghost{background:transparent;border:1px solid rgba(15,45,80,0.06);color:var(--text)}
+
+/* Dashboard layout */
+.dashboard{
+  display:grid;grid-template-columns:320px 1fr;gap:var(--gap);align-items:start;
+}
+@media (max-width:1024px){ .dashboard{grid-template-columns:1fr} .brand .logo{width:48px;height:48px} }
+
+/* Sidebar (profile + quick links) */
+.sidebar{background:var(--panel);border-radius:var(--radius);padding:20px;border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:16px}
+.profile{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.avatar{
+  width:96px;height:96px;border-radius:16px;background:linear-gradient(180deg,#f3f7ff,#ffffff);display:flex;align-items:center;justify-content:center;
+  font-weight:800;color:var(--primary);font-size:2rem;border:1px solid rgba(11,118,209,0.06)
+}
+.profile h2{margin:0;font-size:1.15rem;color:var(--primary);font-weight:700}
+.profile .meta{color:var(--muted);font-size:.95rem}
+
+/* Quick links */
+.quick-links{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.quick-links a{padding:10px;border-radius:10px;border:1px solid var(--border);background:linear-gradient(180deg,#ffffff,#fbfdff);text-align:center;color:var(--text);font-weight:700}
+.quick-links a.primary{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;border:0}
+
+/* Content column */
+.content{display:flex;flex-direction:column;gap:var(--gap)}
+
+/* Cards */
+.card{background:var(--panel);border-radius:12px;padding:18px;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+
+/* Stats row */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{padding:14px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfdff);display:flex;flex-direction:column;gap:6px;border:1px solid rgba(11,118,209,0.04)}
+.stat .label{font-size:.9rem;color:var(--muted);font-weight:700}
+.stat .value{font-size:1.6rem;font-weight:800;color:var(--primary)}
+
+/* Table */
+.table-responsive{overflow:auto;border-radius:8px}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+thead th{background:linear-gradient(180deg,#f7fbff,#f2f7ff);color:var(--primary);font-weight:700;padding:12px 14px;text-align:left;border-bottom:1px solid rgba(11,118,209,0.04)}
+tbody td{padding:12px 14px;border-bottom:1px solid #fafbfd;color:#243044}
+tbody tr:hover td{background:linear-gradient(180deg,rgba(11,118,209,0.02),rgba(11,118,209,0.01))}
+
+/* Status pills */
+.pill{display:inline-block;padding:6px 12px;border-radius:999px;font-weight:700;font-size:.86rem}
+.pill.pending{background:#fff7e6;color:#8a6400}
+.pill.approved{background:#e8fbf3;color:#056a44}
+.pill.declined{background:#fff0f2;color:#7a1c2c}
+
+/* Doctors grid */
+.doctors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.doctor-card{background:linear-gradient(180deg,#fff,#fbfdff);border-radius:12px;padding:14px;border:1px solid rgba(11,118,209,0.03);text-align:center;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:10px;align-items:center}
+.doctor-avatar{width:72px;height:72px;border-radius:12px;background:#fff7f7;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+.doctor-card strong{font-size:1.02rem;color:#122039}
+.doctor-special{color:var(--warm);font-weight:700}
+.doctor-sched{color:var(--muted);font-size:.92rem}
+
+/* Small helpers */
+.row{display:flex;gap:12px;align-items:center}
+.spacer{flex:1}
+.small{font-size:.92rem;color:var(--muted)}
+.center{text-align:center}
+
+/* Footer */
+.footer{padding:18px;text-align:center;color:var(--muted);font-size:.9rem}

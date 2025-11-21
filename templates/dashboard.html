@@ -1,159 +1,310 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>PetClinic | Admin Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-<style>
-* { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-body {
-    margin: 0;
-    background: linear-gradient(135deg, #e3f0ff 0%, #f1e3ff 100%);
-    min-height: 100vh;
-}
-.dashboard {
-    display: flex;
-    max-width: 1400px;
-    margin: 40px auto;
-    box-shadow: 0 6px 24px rgba(25,75,115,0.10);
-    border-radius: 20px;
-    overflow: hidden;
-    background: white;
-}
-.sidebar {
-    width: 260px;
-    background: linear-gradient(135deg, #007bff 90%, #0062cc 120%);
-    padding: 40px 20px 20px 20px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-.sidebar h2 { font-size: 2rem; margin:0 0 36px 0; letter-spacing:2px; }
-.sidebar .logout {
-    display:block;
-    margin-top:60px;
-    text-align:center;
-    font-weight:600;
-    color:white;
-    text-decoration:none;
-    padding:14px 0;
-    border-radius:25px;
-    background:#f44336;
-    transition:0.2s;
-}
-.sidebar .logout:hover { background:#c82333; }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PetClinic — Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Landing page color scheme integrated into the dashboard */
+    :root{
+      --bg-start: #e3f0ff;
+      --bg-end:   #f1e3ff;
+      --primary:  #007bff;    /* landing primary blue */
+      --accent-1: #43e97b;    /* landing CTA gradient start (green) */
+      --accent-2: #38f9d7;    /* landing CTA gradient end (green) */
+      --muted:    #64707a;
+      --panel:    #ffffff;
+      --border:   #e6edf3;
+      --radius:   12px;
+      --shadow:   0 6px 20px rgba(13,40,68,0.06);
+      --sidebar-w:250px;
+      --logo-bg:  #dff3ff;    /* soft logo background to match landing */
+    }
 
-.main-content {
-    flex:1;
-    padding:40px;
-}
-.section-title {
-    color:#1b2a47;
-    font-size:1.6rem;
-    font-weight:600;
-    text-align:left;
-    margin-bottom:25px;
-    padding-bottom:10px;
-    border-bottom:2px solid #f0f2f5;
-    letter-spacing:1px;
-}
-table {
-    width:100%;
-    border-collapse: separate;
-    border-spacing:0;
-    background:#fff;
-    border-radius:16px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.08);
-    overflow:hidden;
-    margin-bottom:30px;
-}
-th, td { padding:18px 16px; text-align:left; vertical-align:middle; font-size:1rem; }
-th { background:#f5f8fc; color:#007bff; font-weight:700; border-bottom:1px solid #eef2fa; }
-tr:nth-child(even) td { background:#f9fafc; }
-tr:hover td { background:#e8f1ff; }
-.status {
-    font-weight:600;
-    border-radius:20px;
-    padding:7px 18px;
-    display:inline-block;
-}
-.status.Pending { color:#856404; background:#fff3cd; }
-.status.Approved { color:#155724; background:#d4edda; }
-.status.Declined { color:#721c24; background:#f8d7da; }
-.btn {
-    border:none;
-    padding:9px 22px;
-    border-radius:20px;
-    cursor:pointer;
-    font-weight:600;
-    color:white;
-    font-size:.98rem;
-    margin:0 2px;
-    transition:.2s;
-    letter-spacing:.5px;
-    box-shadow:0 2px 6px rgba(0,123,255,0.11);
-}
-.approve { background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%) }
-.approve:hover { background: linear-gradient(90deg, #35c277 0%, #24d1cc 100%) }
-.decline { background: linear-gradient(90deg, #ff5858 0%, #f09819 100%) }
-.decline:hover { background: linear-gradient(90deg, #e14646 0%, #c77719 100%) }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,var(--bg-start) 0%, var(--bg-end) 100%);color:#0f1724;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
 
-@media (max-width:900px){ .dashboard{flex-direction:column;} .sidebar{width:100%; padding:20px;} .main-content{padding:20px;} }
-@media (max-width:600px){ th,td{padding:9px 4px;font-size:.95rem;} .section-title{font-size:1.18rem;} }
-</style>
+    /* Layout */
+    .frame{
+      max-width:1180px;margin:36px auto;padding:20px;display:grid;grid-template-columns:var(--sidebar-w) 1fr;gap:20px;align-items:start;
+    }
+    @media (max-width:980px){ .frame{grid-template-columns:1fr;padding:14px;gap:14px} }
+
+    /* Sidebar — blue design like landing navbar */
+    .sidebar{
+      width:100%;
+      background: var(--primary); /* solid blue like landing navbar */
+      color:white;
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow: 0 8px 30px rgba(7,58,115,0.12);
+      display:flex;flex-direction:column;gap:14px;min-height:220px;justify-content:space-between;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:52px;height:52px;border-radius:10px;background:var(--logo-bg);color:var(--primary);
+      display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;border:1px solid rgba(255,255,255,0.08);
+    }
+    .brand .title{font-weight:700;color: #fff}
+    .brand .sub{color:rgba(255,255,255,0.95);font-size:.92rem;margin-top:4px;opacity:.95}
+
+    .nav{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    .nav a{
+      display:block;padding:10px 12px;border-radius:10px;color:rgba(255,255,255,0.95);font-weight:700;font-size:.98rem;
+      transition:all .14s;
+    }
+    .nav a:hover{background:rgba(255,255,255,0.06);transform:translateY(-2px)}
+    .nav a.active{background:rgba(255,255,255,0.12);color:#eaf6ff}
+
+    .logout{
+      display:block;padding:10px 12px;background:#fff; /* invert like landing's register button */
+      color:var(--primary);border-radius:12px;text-align:center;font-weight:700;border:0;
+      box-shadow:0 6px 14px rgba(8,60,115,0.06);
+    }
+    .logout:hover{opacity:.95}
+
+    .signed{color:rgba(255,255,255,0.9);font-size:.92rem;margin-top:10px;opacity:.95}
+
+    /* Main column */
+    .main{display:flex;flex-direction:column;gap:16px}
+
+    /* Header / controls */
+    .header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .title{font-size:1.15rem;font-weight:600;color:var(--primary)}
+    .subtitle{color:var(--muted);font-size:.95rem}
+
+    .controls{display:flex;gap:10px;align-items:center}
+    .search{display:flex;align-items:center;gap:8px;background:var(--panel);padding:8px 12px;border-radius:10px;border:1px solid var(--border)}
+    .search input{border:0;outline:0;background:transparent;font-size:.95rem;width:240px}
+    .btn{padding:8px 12px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    .btn.primary{
+      background:var(--primary); color:white; box-shadow:0 6px 18px rgba(11,118,209,0.09);
+    }
+    .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+    /* Use landing CTA gradient for positive actions */
+    .btn.cta {
+      background: linear-gradient(90deg, var(--accent-1) 0%, var(--accent-2) 100%);
+      color: white;
+      border-radius:20px;
+      padding:9px 14px;
+      font-weight:700;
+    }
+    .btn.cta:hover { filter:brightness(.96) }
+
+    /* Stats */
+    .stats{display:flex;gap:12px}
+    .stat{flex:1;background:var(--panel);padding:12px;border-radius:10px;border:1px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px}
+    .stat .label{color:var(--muted);font-size:.9rem}
+    .stat .value{font-weight:700;font-size:1.3rem;color:var(--primary)}
+
+    /* Layout lists */
+    .lists{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+    @media (max-width:980px){ .lists{grid-template-columns:1fr} }
+
+    .card{background:var(--panel);border-radius:12px;padding:12px;border:1px solid var(--border);box-shadow:var(--shadow)}
+
+    /* Table */
+    .table-wrap{overflow:auto;border-radius:8px}
+    table{width:100%;border-collapse:collapse;font-size:.95rem}
+    thead th{font-weight:700;text-align:left;padding:12px 10px;border-bottom:1px solid #f2f6f9;color:var(--primary);font-size:.95rem}
+    tbody td{padding:12px 10px;border-bottom:1px solid #fbfdff;vertical-align:middle}
+    tbody tr:hover td{background:#fbfdff}
+
+    th:nth-child(1), td:nth-child(1){width:6%}
+    th:nth-child(2), td:nth-child(2){width:28%}
+    th:nth-child(3), td:nth-child(3){width:22%}
+    th:nth-child(4), td:nth-child(4){width:18%}
+    th:nth-child(5), td:nth-child(5){width:18%}
+    th:nth-child(6), td:nth-child(6){width:8%}
+
+    .owner{display:flex;align-items:center;gap:10px}
+    .avatar{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--logo-bg);color:var(--primary);font-weight:700;border:1px solid rgba(11,118,209,0.08)}
+
+    /* Badges & actions */
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:700;font-size:.85rem}
+    .badge.Pending{background:#fff8e6;color:#8a6400}
+    .badge.Approved{background:#eef8f3;color:#0f8a57}
+    .badge.Declined{background:#fff3f3;color:#9f2b37}
+    .actions{display:flex;gap:8px;justify-content:flex-end}
+    .actions a{padding:8px 10px;border-radius:10px;font-weight:700;color:white;text-decoration:none;font-size:.9rem}
+    .actions a.approve{
+      background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+    }
+    .actions a.decline{background:#e05353}
+
+    /* Doctors */
+    .doctors{display:flex;flex-direction:column;gap:10px}
+    .doctor{display:flex;gap:12px;align-items:center;padding:10px;border-radius:10px;border:1px solid var(--border);background:linear-gradient(180deg,#ffffff,#fbfdff)}
+    .doc-photo{width:48px;height:48px;border-radius:10px;background:#fff7ed;color:#bf6f12;display:flex;align-items:center;justify-content:center;font-weight:800}
+
+    .muted{color:var(--muted);font-size:.92rem}
+    .right{text-align:right}
+    .min-row{display:flex;gap:8px;align-items:center}
+  </style>
 </head>
 <body>
-<div class="dashboard">
-    <aside class="sidebar">
-        <div>
-            <h2>Admin</h2>
-            <div><span style="opacity:.8;font-weight:600;letter-spacing:1px;">Dashboard</span></div>
+  <div class="frame">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="Sidebar">
+      <div>
+        <div class="brand">
+          <div class="logo" aria-hidden="true">PC</div>
+          <div>
+            <div class="title">PetClinic</div>
+            <div class="sub">Admin</div>
+          </div>
         </div>
+
+        <nav class="nav" aria-label="Main navigation">
+          <a class="active" href="{{ url_for('dashboard') }}">Overview</a>
+          <a href="{{ url_for('dashboard') }}">Appointments</a>
+          <a href="{{ url_for('dashboard') }}">Doctors</a>
+          <a href="#">Settings</a>
+        </nav>
+      </div>
+
+      <div>
         <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+        <div class="signed">Signed in as <strong>{{ session.get('admin') and 'admin' or 'guest' }}</strong></div>
+      </div>
     </aside>
-    <main class="main-content">
-        <section class="section">
-            <div class="section-title">All Appointments</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Pet Name</th>
-                        <th>Owner</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Reason</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for a in appointments %}
-                    <tr>
-                        <td>{{ a.id }}</td>
-                        <td>{{ a.pet_name }}</td>
-                        <td>{{ a.user.fullname }}</td>
-                        <td>{{ a.date }}</td>
-                        <td>{{ a.time }}</td>
-                        <td>{{ a.reason }}</td>
-                        <td><span class="status {{ a.status }}">{{ a.status }}</span></td>
-                        <td>
-                            {% if a.status=="Pending" %}
-                            <a href="{{ url_for('update_status', appointment_id=a.id, status='Approved') }}" class="btn approve">Approve</a>
-                            <a href="{{ url_for('update_status', appointment_id=a.id, status='Declined') }}" class="btn decline">Decline</a>
-                            {% else %}
-                            <span style="font-weight:600;">{{ a.status }}</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr><td colspan="8" style="text-align:center;">No Appointments Available</td></tr>
-                    {% endfor %}
-                </tbody>
+
+    <!-- Main -->
+    <main class="main" role="main">
+      <div class="header">
+        <div>
+          <div class="title">Welcome back, Admin</div>
+          <div class="subtitle">Overview of clinic activity and upcoming appointments</div>
+        </div>
+
+        <div class="controls">
+          <div class="search" role="search" aria-label="Search appointments">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.35-4.35" stroke="#9aa8b3" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <input placeholder="Search owner, pet, doctor, id..." />
+          </div>
+          <button class="btn ghost">Export</button>
+          <!-- Add doctor uses landing CTA gradient to stand out -->
+          <a class="btn cta" href="{{ url_for('add_doctor') }}">Add Doctor</a>
+        </div>
+      </div>
+
+      <div class="stats" aria-hidden="true">
+        <div class="stat">
+          <div class="label">Total appointments</div>
+          <div class="value">{{ appointments|length }}</div>
+        </div>
+        <div class="stat">
+          <div class="label">Pending</div>
+          <div class="value">{{ appointments|selectattr('status','equalto','Pending')|list|length }}</div>
+        </div>
+        <div class="stat">
+          <div class="label">Approved</div>
+          <div class="value">{{ appointments|selectattr('status','equalto','Approved')|list|length }}</div>
+        </div>
+        <div class="stat">
+          <div class="label">Doctors</div>
+          <div class="value">{{ doctors|length }}</div>
+        </div>
+      </div>
+
+      <div class="lists">
+        <!-- Appointments -->
+        <section class="card" aria-labelledby="appointments">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <div>
+              <div id="appointments" style="font-weight:700">All Appointments</div>
+              <div class="muted">Review and update statuses</div>
+            </div>
+            <div class="muted">Updated: {{ now().strftime('%Y-%m-%d %H:%M') if now is defined else '' }}</div>
+          </div>
+
+          <div class="table-wrap" role="region" aria-label="Appointments table">
+            <table role="table" aria-label="Appointments table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Owner / Pet</th>
+                  <th>Doctor</th>
+                  <th>Date</th>
+                  <th>Reason</th>
+                  <th class="right">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for a in appointments %}
+                <tr>
+                  <td class="muted">#{{ a.id }}</td>
+                  <td>
+                    <div class="owner">
+                      <div class="avatar" aria-hidden="true">{{ (a.user.name[0] if a.user and a.user.name) | default('U') }}</div>
+                      <div>
+                        <div style="font-weight:700">{{ a.user.name if a.user else 'Unknown' }}</div>
+                        <div class="muted">Pet: {{ a.pet_name }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="font-weight:700">{{ a.doctor.name }}</div>
+                    <div class="muted">{{ a.doctor.specialty }}</div>
+                  </td>
+                  <td>{{ a.date }} · {{ a.time }}</td>
+                  <td class="muted">{{ a.reason }}</td>
+                  <td>
+                    <div class="min-row" style="justify-content:flex-end">
+                      <span class="badge {{ a.status }}">{{ a.status }}</span>
+                      {% if a.status == 'Pending' %}
+                        <div class="actions" style="margin-left:8px">
+                          <a class="approve" href="{{ url_for('update_status', appointment_id=a.id, status='Approved') }}">Approve</a>
+                          <a class="decline" href="{{ url_for('update_status', appointment_id=a.id, status='Declined') }}">Decline</a>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6" style="padding:24px;text-align:center;color:var(--muted)">No appointments found.</td></tr>
+                {% endfor %}
+              </tbody>
             </table>
+          </div>
         </section>
+
+        <!-- Doctors -->
+        <aside class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700">Doctors</div>
+              <div class="muted">Available specialists</div>
+            </div>
+            <div class="muted">{{ doctors|length }} total</div>
+          </div>
+
+          <div class="doctors">
+            {% for d in doctors %}
+            <div class="doctor" role="article">
+              <div class="doc-photo" aria-hidden="true">{{ d.name.split(' ')[0][0] }}</div>
+              <div>
+                <div style="font-weight:700">{{ d.name }}</div>
+                <div class="muted">{{ d.specialty }} · {{ d.schedule }}</div>
+              </div>
+            </div>
+            {% else %}
+            <div class="muted">No doctors added yet.</div>
+            {% endfor %}
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <a class="btn cta" href="{{ url_for('add_doctor') }}">Add Doctor</a>
+            <a class="btn ghost" href="#">Manage</a>
+          </div>
+        </aside>
+      </div>
+
     </main>
-</div>
+  </div>
 </body>
 </html>

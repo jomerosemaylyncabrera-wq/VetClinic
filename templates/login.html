@@ -7,94 +7,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
 html,body { margin:0; padding:0; font-family:'Quicksand',Arial,sans-serif; background: #f5ede7;}
-/* Navbar matches homepage */
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 28px 24px 0 24px;
-}
-.navbar-logo {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    font-size: 2rem;
-    color: #ef764c;
-    letter-spacing: .7px;
-}
-.navbar-buttons {
-    display: flex; gap: 1.2rem;
-}
-.btn-main, .btn-alt, .btn-book {
-    padding: 0.72rem 1.8rem; border-radius: 50px;
-    font-weight: 600; font-size: 1.02rem; border: none; text-decoration: none;
-    transition: background 0.18s, color 0.18s, box-shadow 0.16s, transform 0.16s;
-    box-shadow: 0 2px 10px rgba(239,118,76,0.07); cursor: pointer;
-}
+.navbar { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 28px 24px 0 24px;}
+.navbar-logo { font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 2rem; color: #ef764c; letter-spacing: .7px;}
+.navbar-buttons { display: flex; gap: 1.2rem;}
+.btn-main, .btn-alt, .btn-book { padding: 0.72rem 1.8rem; border-radius: 50px; font-weight: 600; font-size: 1.02rem; border: none; text-decoration: none; transition: background 0.18s, color 0.18s, box-shadow 0.16s, transform 0.16s; box-shadow: 0 2px 10px rgba(239,118,76,0.07); cursor: pointer;}
 .btn-main { background: linear-gradient(90deg,#4A7DFF 60%, #ef764c 140%); color: #fff;}
 .btn-main:hover { background: #ef764c; }
 .btn-alt { background: #fff; color: #4A7DFF; border: 2px solid #4A7DFF;}
 .btn-alt:hover { background: #4A7DFF; color: #fff; }
 .btn-book { background: linear-gradient(90deg, #ef764c 70%, #4A7DFF 100%); color: #fff;}
 .btn-book:hover { background: #4A7DFF; }
-body {
-    min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;
-    position: relative;
-}
-.container {
-    max-width:900px; width:97%; background:white; border-radius:24px; box-shadow:0 6px 24px rgba(25,75,115,0.10);
-    display:flex; overflow:hidden; margin: 48px 0 0 0;
-}
+body { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; position: relative;}
+.container { max-width:900px; width:97%; background:white; border-radius:24px; box-shadow:0 6px 24px rgba(25,75,115,0.10); display:flex; overflow:hidden; margin: 48px 0 0 0;}
 .box1, .box2 { flex:1; padding:40px; }
-.box1 {
-    display: flex;
-    flex-direction:column; justify-content:center;
-}
-.box1 h1 {
-    color:#4A7DFF; margin-bottom:25px; font-size:2.1rem; font-family: 'Montserrat',sans-serif;
-}
-.box1 .welcome {
-    color:#ef764c;
-    font-size:1.05rem;
-    margin-bottom:22px;
-    font-family:'Quicksand',sans-serif;
-}
+.box1 { display: flex; flex-direction:column; justify-content:center; }
+.box1 h1 { color:#4A7DFF; margin-bottom:25px; font-size:2.1rem; font-family: 'Montserrat',sans-serif;}
+.box1 .welcome { color:#ef764c; font-size:1.05rem; margin-bottom:22px; font-family:'Quicksand',sans-serif;}
 .box1 form label { display:block; font-weight:600; margin-bottom:6px; }
-.box1 form input[type=email], .box1 form input[type=password] {
-    width:100%; padding:12px 16px; margin-bottom:22px;
-    border:1px solid #e1e4e8; border-radius:8px; font-size:1.05rem;
-}
-.box1 form input[type=submit] {
-    background: linear-gradient(90deg, #ef764c 0%, #4a7dff 100%);
-    border:none; color:white; padding:13px 36px; border-radius:24px; font-weight:700;
-    cursor:pointer; font-size:1.07rem; transition:.2s; font-family: 'Montserrat',sans-serif;
-    box-shadow: 0 2px 16px rgba(74,125,255,0.08);
-}
-.box1 form input[type=submit]:hover {
-    background: linear-gradient(90deg, #4a7dff 0%, #ef764c 100%);
-    transform:scale(1.06);
-}
+.box1 form input[type=email], .box1 form input[type=password] { width:100%; padding:12px 16px; margin-bottom:22px; border:1px solid #e1e4e8; border-radius:8px; font-size:1.05rem;}
+.box1 form input[type=submit] { background: linear-gradient(90deg, #ef764c 0%, #4a7dff 100%); border:none; color:white; padding:13px 36px; border-radius:24px; font-weight:700; cursor:pointer; font-size:1.07rem; transition:.2s; font-family: 'Montserrat',sans-serif; box-shadow: 0 2px 16px rgba(74,125,255,0.08);}
+.box1 form input[type=submit]:hover { background: linear-gradient(90deg, #4a7dff 0%, #ef764c 100%); transform:scale(1.06);}
 .box1 .link { margin-top:18px; font-size:.99rem; }
 .box1 .link a { color:#ef764c; text-decoration:none; font-weight:600; }
-.box2 {
-    background:#f5f8fc; display:flex; justify-content:center; align-items:center;
-    position:relative;
-}
-.box2 img {
-    max-width:100%; border-radius:20px;
-    box-shadow: 0 2px 12px rgba(239,118,76,0.10);
-}
-@media(max-width:800px){
-    .container{flex-direction:column;} .box2{padding:20px;} .box1{padding:30px;}
-    .navbar{flex-direction:column;align-items:flex-start;padding:18px 10px 0 10px;}
-}
-@media(max-width:600px){
-    .navbar-logo{font-size:1.11rem;}
-    .box1 h1{font-size:1.25rem;}
-    .box2 img{max-width:180px;}
-    .container{margin:20px 0 0 0;}
-}
+.box2 { background:#f5f8fc; display:flex; justify-content:center; align-items:center; position:relative;}
+.box2 img { max-width:100%; border-radius:20px; box-shadow: 0 2px 12px rgba(239,118,76,0.10);}
+.flash-danger {color:#ef764c;font-weight:bold;margin-bottom:14px;}
+.flash-success {color:#4A7DFF;font-weight:bold;margin-bottom:14px;}
+@media(max-width:800px){ .container{flex-direction:column;} .box2{padding:20px;} .box1{padding:30px;} .navbar{flex-direction:column;align-items:flex-start;padding:18px 10px 0 10px;}}
+@media(max-width:600px){ .navbar-logo{font-size:1.11rem;} .box1 h1{font-size:1.25rem;} .box2 img{max-width:180px;} .container{margin:20px 0 0 0;}}
 </style>
 </head>
 <body>
@@ -102,6 +42,13 @@ body {
         <div class="box1">
             <h1>Login</h1>
             <div class="welcome">Welcome back! Let’s get your pet the care they deserve.</div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
             <form method="POST">
                 <label>Email</label>
                 <input type="email" name="email" required>

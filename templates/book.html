@@ -1,40 +1,364 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>PetClinic | Book Appointment</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PetClinic — Book Appointment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #e3f0ff;
+      --bg-2: #f1e3ff;
+      --primary: #007bff;
+      --accent-start: #43e97b;
+      --accent-end: #38f9d7;
+      --muted: #6b7280;
+      --panel: #ffffff;
+      --radius: 16px;
+      --shadow-lg: 0 14px 40px rgba(10,45,90,0.08);
+      --shadow-sm: 0 6px 18px rgba(10,45,90,0.06);
+      --max-width: 1100px;
+    }
+
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    html,body { height:100%; margin:0; background: linear-gradient(135deg,var(--bg-1),var(--bg-2)); color:#122033; -webkit-font-smoothing:antialiased; }
+
+    .page {
+      max-width: var(--max-width);
+      margin: 36px auto;
+      padding: 20px;
+    }
+
+    /* Card */
+    .card {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    @media (min-width: 900px) {
+      .card { grid-template-columns: 1fr 420px; align-items:start; }
+    }
+
+    /* Left / form area */
+    .form-wrap {
+      padding: 6px 6px 6px 6px;
+    }
+
+    .heading {
+      display:flex;align-items:center;gap:12px;margin-bottom:6px;
+    }
+    .heading h2 { margin:0; color:var(--primary); font-size:1.35rem; }
+    .heading p { margin:0; color:var(--muted); font-size:0.95rem; }
+
+    form {
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      align-items:start;
+    }
+    label { display:block; font-weight:600; font-size:.92rem; color:#213249; margin-bottom:6px; }
+    .full { grid-column: 1 / -1; }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    select,
+    textarea {
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid #e6edf3;
+      background:#fbfeff;
+      font-size:1rem;
+      transition: box-shadow .14s, transform .12s, border-color .12s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 6px 18px rgba(11,118,209,0.08);
+      transform: translateY(-2px);
+    }
+
+    textarea { min-height:120px; resize:vertical; }
+
+    .controls { display:flex; gap:12px; align-items:center; justify-content:space-between; width:100%; }
+    .notes { font-size:0.9rem; color:var(--muted); }
+
+    .submit {
+      grid-column: 1 / -1;
+      appearance: none;
+      -webkit-appearance: none;
+      border: none;
+      padding:12px 16px;
+      border-radius: 999px;
+      font-weight:700;
+      cursor:pointer;
+      color:white;
+      background: linear-gradient(90deg,var(--accent-start),var(--accent-end));
+      box-shadow: 0 8px 26px rgba(67,233,123,0.12);
+      transition: transform .12s, box-shadow .12s;
+    }
+    .submit:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(67,233,123,0.14); }
+
+    /* Right: doctor list and details */
+    .sidebar {
+      padding: 10px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .search-doctor {
+      display:flex; gap:8px; align-items:center;
+    }
+    .search-doctor input {
+      flex:1; padding:10px 12px; border-radius:10px; border:1px solid #eef4fb;
+      background:#fbfeff;
+    }
+
+    .doctors {
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      max-height:420px;
+      overflow:auto;
+      padding-right:6px;
+    }
+
+    .doctor-card {
+      display:flex; gap:12px; align-items:center; padding:10px; border-radius:12px;
+      background: linear-gradient(180deg,#ffffff,#fbfdff);
+      border:1px solid rgba(11,118,209,0.04);
+      cursor:pointer;
+      transition: transform .12s, box-shadow .12s, border-color .12s;
+    }
+    .doctor-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-sm); }
+    .doctor-card.selected { border-color: var(--primary); box-shadow: 0 8px 30px rgba(11,118,209,0.06); }
+    .doctor-avatar { width:56px; height:56px; border-radius:10px; background:#f5fbff; display:flex;align-items:center;justify-content:center; font-weight:700; color:var(--primary); font-size:18px; border:1px solid rgba(11,118,209,0.04); }
+    .doctor-meta { display:flex; flex-direction:column; }
+    .doctor-name { font-weight:700; color:#15243b; }
+    .doctor-spec { font-size:.9rem; color:var(--muted); margin-top:4px; }
+
+    .doctor-schedule { margin-left:auto; font-size:.88rem; color:var(--muted); white-space:nowrap; }
+
+    .empty { text-align:center; color:var(--muted); padding:18px; }
+
+    /* small footer links */
+    .links { text-align:center; margin-top:6px; font-size:.92rem; color:var(--muted); }
+    .links a { color:var(--primary); text-decoration:none; font-weight:700; margin:0 6px; }
+
+    /* responsive tweaks */
+    @media (max-width: 640px) {
+      .card { padding:16px; }
+      form { grid-template-columns: 1fr; }
+      .sidebar { order: -1; }
+      .doctor-schedule { display:none; }
+    }
+  </style>
 </head>
 <body>
-    <div id="nav">
-        <h2>🐾 Book an Appointment</h2>
-    </div>
-
-    <div class="containerII">
-        <div class="innerContainer">
-            <div class="box1">
-                <h1>Book Now</h1>
-                <form method="POST">
-                    <label>Pet Name</label>
-                    <input type="text" name="pet_name" required>
-
-                    <label>Date</label>
-                    <input type="date" name="date" required>
-
-                    <label>Time</label>
-                    <input type="time" name="time" required>
-
-                    <label>Reason for Visit</label>
-                    <input type="text" name="reason" required>
-
-                    <input type="submit" id="submit" value="Submit Appointment">
-                </form>
-                <p class="link"><a href="{{ url_for('logout') }}">Logout</a></p>
-            </div>
-            <div class="box2">
-
-            </div>
+  <div class="page">
+    <div class="card" role="region" aria-label="Book appointment card">
+      <!-- LEFT: form -->
+      <div class="form-wrap" aria-labelledby="booking-heading">
+        <div class="heading">
+          <h2 id="booking-heading">📅 Book an Appointment</h2>
+          <p class="notes">Choose a doctor, pick a date & time, and tell us what's wrong — we'll take care of the rest.</p>
         </div>
+
+        <form method="POST" id="bookingForm" novalidate>
+          <div class="full">
+            <label for="pet_name">Pet name</label>
+            <input id="pet_name" name="pet_name" type="text" placeholder="e.g. Milo" required />
+          </div>
+
+          <div class="full">
+            <label for="doctor_id">Doctor</label>
+            <select id="doctorSelect" name="doctor_id" required aria-required="true">
+              <option value="">Select a doctor</option>
+              {% for d in doctors %}
+                <option value="{{ d.id }}" data-name="{{ d.name }}" data-specialty="{{ d.specialty }}" data-schedule="{{ d.schedule }}"
+                  {% if selected_doctor_id and selected_doctor_id|int == d.id %}selected{% endif %}>
+                  {{ d.name }} — {{ d.specialty }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div>
+            <label for="date">Date</label>
+            <input id="date" name="date" type="date" required />
+          </div>
+
+          <div>
+            <label for="time">Time</label>
+            <input id="time" name="time" type="time" required />
+          </div>
+
+          <div class="full">
+            <label for="reason">Reason for appointment</label>
+            <textarea id="reason" name="reason" placeholder="Short note about symptoms or concerns" required></textarea>
+          </div>
+
+          <div class="full">
+            <button type="submit" class="submit" id="submitBtn">Book Now</button>
+          </div>
+        </form>
+
+        <div class="links" aria-hidden="true">
+          <a href="{{ url_for('pet_owner_dashboard') }}">Dashboard</a> |
+          <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+      </div>
+
+      <!-- RIGHT: doctors and details -->
+      <aside class="sidebar" aria-label="Doctors and details">
+        <div class="search-doctor">
+          <input id="doctorSearch" type="search" placeholder="Search doctors (name or specialty)" aria-label="Search doctors">
+        </div>
+
+        <div id="doctorsList" class="doctors" role="list">
+          {% for d in doctors %}
+          <div class="doctor-card{% if selected_doctor_id and selected_doctor_id|int == d.id %} selected{% endif %}"
+               role="listitem"
+               tabindex="0"
+               data-id="{{ d.id }}"
+               data-name="{{ d.name }}"
+               data-specialty="{{ d.specialty }}"
+               data-schedule="{{ d.schedule }}">
+            <div class="doctor-avatar" aria-hidden="true">{{ d.name.split(' ')[0][0] }}</div>
+            <div class="doctor-meta">
+              <div class="doctor-name">{{ d.name }}</div>
+              <div class="doctor-spec">{{ d.specialty }}</div>
+            </div>
+            <div class="doctor-schedule">{{ d.schedule }}</div>
+          </div>
+          {% else %}
+          <div class="empty">No doctors available right now.</div>
+          {% endfor %}
+        </div>
+
+        <div class="card" style="margin-top:auto">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font-weight:700">Selected Doctor</div>
+            <div id="selectedBadge" style="color:var(--muted);font-size:.95rem">—</div>
+          </div>
+          <div id="selectedDetails" style="margin-top:8px;color:var(--muted);font-size:.95rem">
+            Click a doctor to preview their schedule and specialties.
+          </div>
+        </div>
+      </aside>
     </div>
+  </div>
+
+  <script>
+    (function(){
+      // min date = today
+      const dateInput = document.getElementById('date');
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth()+1).padStart(2,'0');
+      const dd = String(today.getDate()).padStart(2,'0');
+      const minDate = `${yyyy}-${mm}-${dd}`;
+      if (dateInput) dateInput.setAttribute('min', minDate);
+
+      // doctor selection sync & preview
+      const doctorSelect = document.getElementById('doctorSelect');
+      const doctorsList = document.getElementById('doctorsList');
+      const selectedDetails = document.getElementById('selectedDetails');
+      const selectedBadge = document.getElementById('selectedBadge');
+      const doctorCards = Array.from(document.querySelectorAll('.doctor-card'));
+      const searchInput = document.getElementById('doctorSearch');
+
+      function highlightSelected(id) {
+        doctorCards.forEach(card => {
+          if (card.dataset.id === id) card.classList.add('selected');
+          else card.classList.remove('selected');
+        });
+      }
+
+      function showDetailsFromCard(card) {
+        const name = card.dataset.name || '—';
+        const specialty = card.dataset.specialty || '—';
+        const schedule = card.dataset.schedule || '—';
+        selectedBadge.textContent = name;
+        selectedDetails.innerHTML = '<strong style="color:#15243b">'+name+'</strong>' +
+          '<div style="margin-top:6px">Specialty: <span style="color:var(--muted)">'+specialty+'</span></div>' +
+          '<div style="margin-top:6px">Schedule: <span style="color:var(--muted)">'+schedule+'</span></div>';
+      }
+
+      // clicking a card selects in the <select> and preview
+      doctorCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const id = card.dataset.id;
+          doctorSelect.value = id;
+          highlightSelected(id);
+          showDetailsFromCard(card);
+          doctorSelect.dispatchEvent(new Event('change'));
+        });
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+        });
+      });
+
+      // when select changes, highlight matching card and preview
+      if (doctorSelect) {
+        doctorSelect.addEventListener('change', () => {
+          const id = doctorSelect.value;
+          highlightSelected(id);
+          const matching = doctorCards.find(c => c.dataset.id === id);
+          if (matching) showDetailsFromCard(matching);
+          else {
+            selectedBadge.textContent = '—';
+            selectedDetails.textContent = 'Click a doctor to preview their schedule and specialties.';
+          }
+        });
+
+        // trigger initial selection if server-side selected doctor present
+        (function initSelected(){
+          const initial = doctorSelect.value;
+          if (initial) {
+            const matching = doctorCards.find(c => c.dataset.id === initial);
+            if (matching) {
+              matching.classList.add('selected');
+              showDetailsFromCard(matching);
+              // scroll into view
+              matching.scrollIntoView({behavior:'smooth', block:'center'});
+            }
+          }
+        })();
+      }
+
+      // simple search filtering (client-side)
+      if (searchInput) {
+        searchInput.addEventListener('input', () => {
+          const q = searchInput.value.trim().toLowerCase();
+          doctorCards.forEach(card => {
+            const name = card.dataset.name.toLowerCase();
+            const spec = card.dataset.specialty.toLowerCase();
+            const visible = !q || name.includes(q) || spec.includes(q);
+            card.style.display = visible ? '' : 'none';
+          });
+        });
+      }
+
+      // client-side submission hint (prevent double submit)
+      const bookingForm = document.getElementById('bookingForm');
+      const submitBtn = document.getElementById('submitBtn');
+      if (bookingForm && submitBtn) {
+        bookingForm.addEventListener('submit', () => {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Booking…';
+        });
+      }
+    })();
+  </script>
 </body>
 </html>

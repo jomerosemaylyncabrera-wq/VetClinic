@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pet Clinic — Add Doctor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --panel:#ffffff;
+      --primary:#0b76d1;
+      --muted:#64707a;
+      --border:#e6edf3;
+      --radius:12px;
+      --shadow:0 6px 20px rgba(13,40,68,0.06);
+      --max-width:820px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:#0f1724}
+    a{color:var(--primary);text-decoration:none}
+    .container{max-width:var(--max-width);margin:32px auto;padding:18px;display:flex;flex-direction:column;gap:18px}
+    .card{background:var(--panel);padding:18px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
+    h1{margin:0;font-size:1.15rem}
+    .sub{color:var(--muted);font-size:.95rem;margin-top:6px}
+    form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+    label{display:block;font-weight:600;margin-bottom:6px;font-size:.90rem}
+    input[type="text"], textarea{
+      width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#fbfeff;
+      font-size:.95rem;outline:none
+    }
+    textarea{resize:vertical;min-height:110px;grid-column:1 / -1}
+    .full{grid-column:1 / -1}
+    .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+    .btn{padding:10px 14px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    .btn.primary{background:var(--primary);color:white}
+    .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+    .back{font-size:.95rem;color:var(--muted)}
+    .flash{padding:10px;border-radius:8px;background:#f0f9ff;border:1px solid #d7f0ff;color:#0b76d1}
+    .note{background:#f2fafc;border:1px solid #ddeefc;color:#167bc6;border-radius:7px;padding:10px;margin-bottom:12px;font-size:.97rem}
+    @media (max-width:720px){
+      form{grid-template-columns:1fr}
+      .actions{justify-content:stretch;flex-direction:column}
+      .actions .btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div>
+        <h1>Add Doctor</h1>
+        <div class="sub">Add a new specialist to the clinic. All fields except photo are required.</div>
+      </div>
+      <div style="text-align:right">
+        <a class="back" href="{{ url_for('dashboard') }}">← Back to dashboard</a>
+      </div>
+    </div>
+    <div class="card">
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      <form action="{{ url_for('add_doctor') }}" method="post" novalidate>
+        <div>
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" placeholder="Dr. Jamie Vet" required />
+        </div>
+        <div>
+          <label for="specialty">Specialty</label>
+          <input id="specialty" name="specialty" type="text" placeholder="Cats & Dogs" required />
+        </div>
+        <div class="full">
+          <label for="schedule">Schedule</label>
+          <input id="schedule" name="schedule" type="text" placeholder="Mon-Fri 9am-3pm" required />
+        </div>
+        <div class="full">
+          <label for="photo_url">Photo (optional)</label>
+          <input
+            id="photo_url"
+            name="photo_url"
+            type="text"
+            placeholder="doctorpics/photo.jpg or https://example.com/image.jpg"
+          />
+        </div>
+        <div class="full">
+          <label for="notes">Notes (optional)</label>
+          <textarea id="notes" name="notes" placeholder="Short bio or notes for internal use"></textarea>
+        </div>
+        <div class="actions full">
+          <a class="btn ghost" href="{{ url_for('dashboard') }}">Cancel</a>
+          <button class="btn primary" type="submit">Add Doctor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

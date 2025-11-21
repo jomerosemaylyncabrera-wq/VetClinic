@@ -29,7 +29,9 @@ body {
     font-family:'Quicksand',sans-serif;
 }
 .box1 form label { display:block; font-weight:600; margin-bottom:6px; }
-.box1 form input[type=text], .box1 form input[type=email], .box1 form input[type=password] {
+.box1 form input[type=text],
+.box1 form input[type=email],
+.box1 form input[type=password] {
     width:100%; padding:12px 16px; margin-bottom:22px;
     border:1px solid #e1e4e8; border-radius:8px; font-size:1.04rem;
 }
@@ -71,16 +73,27 @@ body {
         <form method="POST">
             <label>Full Name</label>
             <input type="text" name="fullname" required>
+
             <label>Email</label>
             <input type="email" name="email" required>
+
             <label>Password</label>
             <input type="password" name="password" required>
+
+            <!-- Added Contact and Address fields -->
+            <label>Contact Number</label>
+            <input type="text" name="contact" placeholder="e.g. 0912-345-6789">
+
+            <label>Address</label>
+            <input type="text" name="address" placeholder="e.g. 123 Pet Street, Manila">
+
             <input type="submit" value="Register">
         </form>
+
         <p class="link">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
     </div>
     <div class="box2">
-        <img src="{{ url_for('static', filename='assets/pet_register.png') }}" alt="Register Image">
+        <img src="{{ url_for('static', filename='pet_book.png') }}" alt="register Image">
     </div>
 </div>
 </body>
