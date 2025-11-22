@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = "petclinic_secret_key"
@@ -8,7 +9,17 @@ app.secret_key = "petclinic_secret_key"
 # Database setup
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///petclinic.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["UPLOAD_FOLDER"] = "static/doctorpics"
+app.config["MAX_CONTENT_LENGTH"] = 2 * 1024 * 1024  # 2MB max upload size
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 db = SQLAlchemy(app)
+
+# Ensure photo directory exists
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # MODELS
 class User(db.Model):
@@ -191,7 +202,26 @@ def add_doctor():
         name = request.form["name"]
         specialty = request.form["specialty"]
         schedule = request.form["schedule"]
-        photo_url = request.form.get("photo_url", None)
+
+        photo_url = None
+        if "photo" in request.files and request.files["photo"].filename != "":
+            file = request.files["photo"]
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                # Avoid overwrite
+                i = 1
+                orig_filename = filename
+                while os.path.exists(filepath):
+                    name_part, ext_part = os.path.splitext(orig_filename)
+                    filename = f"{name_part}_{i}{ext_part}"
+                    filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                    i += 1
+                file.save(filepath)
+                photo_url = f"/static/doctorpics/{filename}"
+            else:
+                flash("Invalid image file type. Allowed types: png, jpg, jpeg, gif.", "danger")
+                return redirect(url_for("add_doctor"))
 
         new_doctor = Doctor(name=name, specialty=specialty, schedule=schedule, photo_url=photo_url)
         db.session.add(new_doctor)

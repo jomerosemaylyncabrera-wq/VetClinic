@@ -152,8 +152,12 @@
                 {% if doc.photo_url %}
                   {% if doc.photo_url.startswith('http') %}
                     <img src="{{ doc.photo_url }}" alt="Dr. {{ doc.name }}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">
+                  {% elif doc.photo_url.startswith('/static/') %}
+                    <img src="{{ url_for('static', filename=doc.photo_url[8:]) }}" alt="Dr. {{ doc.name }}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">
+                  {% elif doc.photo_url.startswith('doctorpics/') %}
+                    <img src="{{ url_for('static', filename=doc.photo_url) }}" alt="Dr. {{ doc.name }}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">
                   {% else %}
-                    <img src="{{ url_for('static', filename=doc.photo_url.lstrip('/')) }}" alt="Dr. {{ doc.name }}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">
+                    <img src="{{ url_for('static', filename='doctorpics/' ~ doc.photo_url) }}" alt="Dr. {{ doc.name }}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">
                   {% endif %}
                 {% else %}
                   <span>👩‍⚕️</span>

@@ -25,9 +25,13 @@
     .sub{color:var(--muted);font-size:.95rem;margin-top:6px}
     form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
     label{display:block;font-weight:600;margin-bottom:6px;font-size:.90rem}
-    input[type="text"], textarea{
+    input[type="text"], input[type="file"], textarea{
       width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#fbfeff;
       font-size:.95rem;outline:none
+    }
+    input[type="file"] {
+      border:0;
+      background:none;
     }
     textarea{resize:vertical;min-height:110px;grid-column:1 / -1}
     .full{grid-column:1 / -1}
@@ -65,7 +69,7 @@
           {% endfor %}
         {% endif %}
       {% endwith %}
-      <form action="{{ url_for('add_doctor') }}" method="post" novalidate>
+      <form action="{{ url_for('add_doctor') }}" method="post" enctype="multipart/form-data" novalidate>
         <div>
           <label for="name">Full name</label>
           <input id="name" name="name" type="text" placeholder="Dr. Jamie Vet" required />
@@ -79,13 +83,8 @@
           <input id="schedule" name="schedule" type="text" placeholder="Mon-Fri 9am-3pm" required />
         </div>
         <div class="full">
-          <label for="photo_url">Photo (optional)</label>
-          <input
-            id="photo_url"
-            name="photo_url"
-            type="text"
-            placeholder="doctorpics/photo.jpg or https://example.com/image.jpg"
-          />
+          <label for="photo">Photo (optional)</label>
+          <input id="photo" name="photo" type="file" accept="image/*" />
         </div>
         <div class="full">
           <label for="notes">Notes (optional)</label>
